@@ -8,48 +8,8 @@ library(readxl)
 library(dplyr)
 library(purrr)
 
-# Cargar los datos (adaptar las rutas de archivo)
-data2023 <- read.csv("2023.csv", sep=";")
-data2022 <- read.csv("2022.csv", sep=";")
-
-#Eliminar columnas que tienen un valor unico
-data2023 <- data2023[, sapply(data2023, function(col) length(unique(col)) > 1)]
-data2022 <- data2022[, sapply(data2022, function(col) length(unique(col)) > 1)]
-
-data2023$Mes <- as.factor(data2023$Mes)
-data2023$Año <- 2023
-
-data2022$Mes <- as.factor(data2022$Mes)
-data2022$Año <- 2022
-
-
-names(data2023) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio",
-                               "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
-                               "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
-                               "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio","Año")
-names(data2022) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio",
-                     "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
-                     "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
-                     "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio","Año")
-
-
-data2023 <- data2023[, !colnames(data2023) %in% "Corre"]
-data2022 <- data2022[, !colnames(data2022) %in% "Corre"]
-
-#como tiene distinto tipo se convierten ambos al mismo
-data2023$`Número de Cabezas` <- as.integer(data2023$`Número de Cabezas`)
-data2022$`Número de Cabezas` <- as.integer(data2022$`Número de Cabezas`)
-data2023$`Peso total en libras` <- gsub("[^0-9.-]", "", data2023$`Peso total en libras`)
-data2022$`Peso total en libras` <- gsub("[^0-9.-]", "", data2022$`Peso total en libras`)
-data2023$`Peso total en libras` <- as.double(data2023$`Peso total en libras`)
-data2022$`Peso total en libras` <- as.double(data2022$`Peso total en libras`)
-
-#se unen a la misma data
-combined_data <- bind_rows(data2023, data2022)
-print(head(combined_data))
-
 read_sheet_from_row <- function(file_path, sheet) {
-  # Extrae el año del nombre del archivo (asumiendo que el año está en el nombre del archivo)
+  # Extrae el año del nombre del archivo
   year <- as.numeric(gsub("[^0-9]", "", basename(file_path)))
   
   # Define la fila de inicio por defecto
@@ -57,7 +17,7 @@ read_sheet_from_row <- function(file_path, sheet) {
   clase <- 0
   sexo <- 0
   
-  # Cambia la fila de inicio si la hoja es "CUADRO II - 4.1"
+  #se establecen variables
   if (sheet == "CUADRO II - 4.1") {
     tipo <- 1
     clase <- 1
@@ -110,25 +70,24 @@ read_sheet_from_row <- function(file_path, sheet) {
     clase <- 4 #caprino
   }
   
-  # Leer los datos sin encabezados, omitiendo las filas previas
+  # Leer los datos sin encabezados,
   data <- read_excel(
     path = file_path,
     sheet = sheet,
-    skip = start_row - 1,  # Omitir filas previas al comienzo de los datos
-    col_names = FALSE  # No leer encabezados
+    skip = start_row - 1,  
+    col_names = FALSE 
   )
   
-  # Eliminar la última fila si contiene información de fuente
+  # Eliminar la última fila porque tiene la fuente
   data <- data[-nrow(data), ]  
   
-  # Filtrar filas vacías
   data <- data %>%
     filter(rowSums(is.na(.)) < ncol(.))  # Elimina filas vacías
   
   # Añadir columna del año
   data <- mutate(data, Año = year)
   
-  # Reorganizar las columnas manualmente utilizando las posiciones conocidas
+  # Reorganizar las columnas 
   data <- data %>%
     transmute(
       `Tipo de Carne` = tipo,
@@ -172,20 +131,3 @@ all_data <- file_list %>%
 
 # Muestra el resultado final
 all_data
-
-
-#Aqui van las reglas 
-reglas <- apriori(combined_data, parameter = list(support=0.2, confidence=0.5 ))
-reglas2023 <- apriori(data2023, parameter = list(support=0.2, confidence=0.5 ))
-reglas2022 <- apriori(data2022, parameter = list(support=0.2, confidence=0.5 ))
-
-#Mostrar las reglas 
-inspect(reglas[0:628])
-inspect(reglas2023[0:100])
-inspect(reglas2022[0:100])
-
-# Mostrar las reglas interesantes
-inspect(sort(reglas, by = "lift")[1:500])
-inspect(sort(reglas2023, by = "lift")[1:10])
-inspect(sort(reglas2022, by = "lift")[1:10])
-
