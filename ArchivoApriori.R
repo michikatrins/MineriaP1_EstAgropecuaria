@@ -180,7 +180,9 @@ reglas2023 <- apriori(data2023, parameter = list(support=0.2, confidence=0.5 ))
 reglas2022 <- apriori(data2022, parameter = list(support=0.2, confidence=0.5 ))
 
 #Mostrar las reglas 
-inspect(reglas[0:628])
+inspect(reglas[0:300])
+inspect(reglas[300:600])
+inspect(reglas[600:628])
 inspect(reglas2023[0:100])
 inspect(reglas2022[0:100])
 

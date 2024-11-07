@@ -1,0 +1,104 @@
+# Instalar y cargar las librerías necesarias
+install.packages("arules")
+install.packages("readxl")
+install.packages("dplyr")
+install.packages("purrr")
+install.packages("genero")
+library(genero)
+library(arules)
+library(readxl)
+library(dplyr)
+library(purrr)
+
+# Cargar los datos (adaptar las rutas de archivo)
+data2023 <- read.csv("2023.csv", sep=";")
+data2022 <- read.csv("2022.csv", sep=";")
+
+#Eliminar columnas que tienen un valor unico
+data2023 <- data2023[, sapply(data2023, function(col) length(unique(col)) > 1)]
+data2022 <- data2022[, sapply(data2022, function(col) length(unique(col)) > 1)]
+
+data2023$Mes <- as.factor(data2023$Mes)
+data2023$Año <- 2023
+
+data2022$Mes <- as.factor(data2022$Mes)
+data2022$Año <- 2022
+
+
+names(data2023) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio",
+                     "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
+                     "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
+                     "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio","Año")
+names(data2022) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio",
+                     "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
+                     "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
+                     "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio","Año")
+
+data2023 <- data2023[, !colnames(data2023) %in% "Corre"]
+data2022 <- data2022[, !colnames(data2022) %in% "Corre"]
+
+#como tiene distinto tipo se convierten ambos al mismo
+data2023$`Número de Cabezas` <- as.integer(data2023$`Número de Cabezas`)
+data2022$`Número de Cabezas` <- as.integer(data2022$`Número de Cabezas`)
+data2023$`Peso total en libras` <- gsub("[^0-9.-]", "", data2023$`Peso total en libras`)
+data2022$`Peso total en libras` <- gsub("[^0-9.-]", "", data2022$`Peso total en libras`)
+data2023$`Peso total en libras` <- as.double(data2023$`Peso total en libras`)
+data2022$`Peso total en libras` <- as.double(data2022$`Peso total en libras`)
+
+#se unen a la misma data
+combined_data <- bind_rows(data2023, data2022)
+print(head(combined_data))
+
+# Convertir 'Clase' y 'Sexo (Subclase)'
+combined_data$Clase <- as.factor(combined_data$Clase)
+combined_data$`Sexo (subclase)` <- as.factor(combined_data$`Sexo (subclase)`)
+
+# Generar reglas de asociación
+reglas <- apriori(combined_data, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas[0:100])
+
+
+# Filtrar para 'Clase' específica (ejemplo para clase 1: Bovino)
+combined_data_clase1 <- subset(combined_data, Clase == 1)
+reglas_clase1 <- apriori(combined_data_clase1, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_clase1[0:200])
+
+
+# Filtrar para 'Clase' específica (ejemplo para clase 2: Bovino)
+combined_data_clase2 <- subset(combined_data, Clase == 2)
+reglas_clase2 <- apriori(combined_data_clase2, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_clase2[0:200])
+
+
+# Filtrar para 'Clase' específica (ejemplo para clase 3: Ovino)
+combined_data_clase3 <- subset(combined_data, Clase == 3)
+
+# Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
+if (length(unique(combined_data_clase3$`Tipo de Carne`)) <= 1) {
+  combined_data_clase3 <- combined_data_clase3[, !(names(combined_data_clase3) %in% "Tipo de Carne")]
+}
+
+# Convertir 'Clase' a factor
+combined_data_clase3$Clase <- as.factor(combined_data_clase3$Clase)
+
+# Generar reglas con apriori
+reglas_clase3 <- apriori(combined_data_clase3, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_clase3[0:400])
+inspect(sort(reglas_clase3, by = "lift")[1:400])
+
+
+# Filtrar para 'Clase' específica (ejemplo para clase 4)
+combined_data_clase4 <- subset(combined_data, Clase == 4)
+
+# Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
+if (length(unique(combined_data_clase4$`Tipo de Carne`)) <= 1) {
+  combined_data_clase4 <- combined_data_clase4[, !(names(combined_data_clase4) %in% "Tipo de Carne")]
+}
+
+# Convertir 'Clase' a factor
+combined_data_clase4$Clase <- as.factor(combined_data_clase4$Clase)
+
+# Generar reglas con apriori
+reglas_clase4 <- apriori(combined_data_clase4, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_clase4[0:200])
+inspect(sort(reglas_clase4, by = "lift")[1:174])
