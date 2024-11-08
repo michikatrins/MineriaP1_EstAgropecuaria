@@ -20,7 +20,6 @@ Implementación de algoritmo de reglas de asociación:
       Clase=[1,4],
       Año=[2022,2023]}  => {Sexo (subclase)=[5,9]}                              0.2211999  0.6615300 0.3343762 1.375719  3606
 
-
 Se replica en otro ambiente
 
 Regla cuando sea clase 1 
