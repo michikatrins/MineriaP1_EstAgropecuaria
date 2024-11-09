@@ -54,7 +54,7 @@ data2023_fil <- Total_data %>% filter(Año == 2023)
 
 # Agrupar y sumar
 graph2023 <- data2023_fil %>%
-  group_by(Departamento) %>%
+  group_by(Departamento, Clase) %>%
   summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
 
 
@@ -98,3 +98,249 @@ ggplot(graph2022, aes(x = Departamento, y = Total_Numero_Cabezas)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
+# Clase 1
+graph2023_clase1 <- data2023_fil %>%
+  filter(Clase == 1) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2023_clase1, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Bovino en la República, por número de 
+cabezas, según departamento. Año 2023 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+# Clase 2
+
+graph2023_clase2 <- data2023_fil %>%
+  filter(Clase == 2) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2023_clase2, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Porcino en la República, por número de 
+cabezas, según departamento. Año 2023 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+# Clase 3
+
+graph2023_clase3 <- data2023_fil %>%
+  filter(Clase == 3) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2023_clase3, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Ovino en la República, por número de 
+cabezas, según departamento. Año 2023 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Clase 4
+
+graph2023_clase4 <- data2023_fil %>%
+  filter(Clase == 4) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2023_clase4, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Caprino en la República, por número de 
+cabezas, según departamento. Año 2023 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+
+
+
+
+# Clase 1
+graph2022_clase1 <- data2022_fil %>%
+  filter(Clase == 1) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2022_clase1, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "green") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Bovino en la República, por número de 
+cabezas, según departamento. Año 2022 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+# Clase 2
+
+graph2022_clase2 <- data2022_fil %>%
+  filter(Clase == 2) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2022_clase2, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "green") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Porcino en la República, por número de 
+cabezas, según departamento. Año 2022 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+# Clase 3
+
+graph2022_clase3 <- data2022_fil %>%
+  filter(Clase == 3) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2022_clase3, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "green") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Ovino en la República, por número de 
+cabezas, según departamento. Año 2022 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Clase 4
+
+graph2022_clase4 <- data2022_fil %>%
+  filter(Clase == 4) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2022_clase4, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "green") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Caprino en la República, por número de 
+cabezas, según departamento. Año 2022 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+#Relación de destace de ganado bovino, porcino, ovino, caprino según mes. Año 2023
+
+meses_a_numero <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
+                    "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, 
+                    "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12)
+
+rel_data2023 <- data2023_fil %>% 
+  mutate(Mes_Num = meses_a_numero[Mes])
+
+rel_data_suma <- rel_data2023 %>%
+  mutate(Clase = recode(Clase, `1` = "Bovino", `2` = "Porcino", `3` = "Ovino", `4` = "Caprino" )) %>%
+  group_by(Mes_Num, Clase) %>%
+  summarise(Suma_Número_de_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE), .groups = "drop")
+
+
+# Crear la gráfica de líneas con la suma
+ggplot(rel_data_suma, aes(x = Mes_Num, y = Suma_Número_de_Cabezas, color = factor(Clase), group = Clase)) +
+  geom_line(size = 1) +
+  theme_minimal() +
+  labs(title = "Relación de destace de ganado según mes. Año 2023",
+       x = "Mes (Número)",
+       y = "Suma del Número de Cabezas",
+       color = "Clase") +
+  scale_x_continuous(breaks = 1:12, labels = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+#Relación de destace de ganado bovino, porcino, ovino, caprino según mes. Año 2022
+
+
+meses_a_numero <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
+                    "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, 
+                    "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12)
+
+rel_data2022 <- data2022_fil %>% 
+  mutate(Mes_Num = meses_a_numero[Mes])
+
+rel_data_suma <- rel_data2022 %>%
+  mutate(Clase = recode(Clase, `1` = "Bovino", `2` = "Porcino", `3` = "Ovino", `4` = "Caprino" )) %>%
+  group_by(Mes_Num, Clase) %>%
+  summarise(Suma_Número_de_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE), .groups = "drop")
+
+
+# Crear la gráfica de líneas con la suma
+ggplot(rel_data_suma, aes(x = Mes_Num, y = Suma_Número_de_Cabezas, color = factor(Clase), group = Clase)) +
+  geom_line(size = 1) +
+  theme_minimal() +
+  labs(title = "Relación de destace de ganado según mes. Año 2022",
+       x = "Mes (Número)",
+       y = "Suma del Número de Cabezas",
+       color = "Clase") +
+  scale_x_continuous(breaks = 1:12, labels = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
