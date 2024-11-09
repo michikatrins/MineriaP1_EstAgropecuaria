@@ -105,7 +105,6 @@ reglas_clase4 <- apriori(combined_data_clase4, parameter = list(support = 0.2, c
 inspect(reglas_clase4[0:200])
 inspect(sort(reglas_clase4, by = "lift")[1:174])
 
-
 # Selección de columnas numéricas
 num_cols <- sapply(combined_data, is.numeric)
 data_numeric <- combined_data[, num_cols]
@@ -116,8 +115,7 @@ any(is.infinite(data_scaled))
 
 data_scaled <- na.omit(data_scaled)
 
-
-set.seed(25) # Fijar semilla para reproducibilidad
+set.seed(25) # Fijar semilla 
 cluster <- kmeans(data_scaled, centers = 4)
 
 # Convierte los datos en un data frame e incluye la asignación de cluster
@@ -139,6 +137,7 @@ ggplot(data_clustered, aes(x = `Departamento`, y = `Número de Cabezas`, color =
   labs(title = "Clustering K-means: Departamento vs. Número de Cabezas") +
   theme_minimal()
 
+dataf <- subset(combined_data, Clase == 4)
 
 # mostrar
 str(dataf)
