@@ -46,59 +46,60 @@ data2023$`Peso total en libras` <- as.double(data2023$`Peso total en libras`)
 data2022$`Peso total en libras` <- as.double(data2022$`Peso total en libras`)
 
 #se unen a la misma data
-combined_data <- bind_rows(data2023, data2022)
-print(head(combined_data))
+combinar_data <- bind_rows(data2023, data2022)
+print(head(combinar_data))
 
 # Convertir 'Clase' y 'Sexo (Subclase)'
-combined_data$Clase <- as.factor(combined_data$Clase)
-combined_data$`Sexo (subclase)` <- as.factor(combined_data$`Sexo (subclase)`)
+combinar_data$Clase <- as.factor(combinar_data$Clase)
+combinar_data$`Sexo (subclase)` <- as.factor(combinar_data$`Sexo (subclase)`)
 
 # Generar reglas de asociación
-reglas <- apriori(combined_data, parameter = list(support = 0.2, confidence = 0.5))
+reglas <- apriori(combinar_data, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas[0:100])
 
 
 # Filtrar para 'Clase' específica (ejemplo para clase 1: Bovino)
-combined_data_clase1 <- subset(combined_data, Clase == 1)
-reglas_clase1 <- apriori(combined_data_clase1, parameter = list(support = 0.2, confidence = 0.5))
+combinar_data_clase1 <- subset(combinar_data, Clase == 1)
+reglas_clase1 <- apriori(combinar_data_clase1, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_clase1[0:200])
 
 
 # Filtrar para 'Clase' específica (ejemplo para clase 2: Bovino)
-combined_data_clase2 <- subset(combined_data, Clase == 2)
-reglas_clase2 <- apriori(combined_data_clase2, parameter = list(support = 0.2, confidence = 0.5))
+combinar_data_clase2 <- subset(combinar_data, Clase == 2)
+reglas_clase2 <- apriori(combinar_data_clase2, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_clase2[0:200])
 
-
 # Filtrar para 'Clase' específica (ejemplo para clase 3: Ovino)
-combined_data_clase3 <- subset(combined_data, Clase == 3)
+combinar_data_clase3 <- subset(combinar_data, Clase == 3)
 
 # Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
-if (length(unique(combined_data_clase3$`Tipo de Carne`)) <= 1) {
-  combined_data_clase3 <- combined_data_clase3[, !(names(combined_data_clase3) %in% "Tipo de Carne")]
+if (length(unique(combinar_data_clase3$`Tipo de Carne`)) <= 1) {
+  combinar_data_clase3 <- combinar_data_clase3[, !(names(combinar_data_clase3) %in% "Tipo de Carne")]
 }
 
 # Convertir 'Clase' a factor
-combined_data_clase3$Clase <- as.factor(combined_data_clase3$Clase)
+combinar_data_clase3$Clase <- as.factor(combinar_data_clase3$Clase)
 
 # Generar reglas con apriori
-reglas_clase3 <- apriori(combined_data_clase3, parameter = list(support = 0.2, confidence = 0.5))
+reglas_clase3 <- apriori(combinar_data_clase3, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_clase3[0:400])
+inspect(reglas_clase3[400:600])
+inspect(reglas_clase3[600:800])
 inspect(sort(reglas_clase3, by = "lift")[1:400])
 
 
 # Filtrar para 'Clase' específica (ejemplo para clase 4)
-combined_data_clase4 <- subset(combined_data, Clase == 4)
+combinar_data_clase4 <- subset(combinar_data, Clase == 4)
 
 # Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
-if (length(unique(combined_data_clase4$`Tipo de Carne`)) <= 1) {
-  combined_data_clase4 <- combined_data_clase4[, !(names(combined_data_clase4) %in% "Tipo de Carne")]
+if (length(unique(combinar_data_clase4$`Tipo de Carne`)) <= 1) {
+  combinar_data_clase4 <- combinar_data_clase4[, !(names(combinar_data_clase4) %in% "Tipo de Carne")]
 }
 
 # Convertir 'Clase' a factor
-combined_data_clase4$Clase <- as.factor(combined_data_clase4$Clase)
+combinar_data_clase4$Clase <- as.factor(combinar_data_clase4$Clase)
 
 # Generar reglas con apriori
-reglas_clase4 <- apriori(combined_data_clase4, parameter = list(support = 0.2, confidence = 0.5))
+reglas_clase4 <- apriori(combinar_data_clase4, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_clase4[0:200])
 inspect(sort(reglas_clase4, by = "lift")[1:174])

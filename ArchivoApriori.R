@@ -45,8 +45,8 @@ data2023$`Peso total en libras` <- as.double(data2023$`Peso total en libras`)
 data2022$`Peso total en libras` <- as.double(data2022$`Peso total en libras`)
 
 #se unen a la misma data
-combined_data <- bind_rows(data2023, data2022)
-print(head(combined_data))
+combinar_data <- bind_rows(data2023, data2022)
+print(head(combinar_data))
 
 read_sheet_from_row <- function(file_path, sheet) {
   # Extrae el año del nombre del archivo (asumiendo que el año está en el nombre del archivo)
@@ -175,7 +175,7 @@ all_data
 
 
 #Aqui van las reglas 
-reglas <- apriori(combined_data, parameter = list(support=0.2, confidence=0.5 ))
+reglas <- apriori(combinar_data, parameter = list(support=0.2, confidence=0.5 ))
 reglas2023 <- apriori(data2023, parameter = list(support=0.2, confidence=0.5 ))
 reglas2022 <- apriori(data2022, parameter = list(support=0.2, confidence=0.5 ))
 

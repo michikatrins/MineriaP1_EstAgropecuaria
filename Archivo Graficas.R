@@ -54,7 +54,7 @@ data2023_fil <- Total_data %>% filter(Año == 2023)
 
 # Agrupar y sumar
 graph2023 <- data2023_fil %>%
-  group_by(Departamento, Clase) %>%
+  group_by(Departamento) %>%
   summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
 
 
@@ -98,6 +98,51 @@ ggplot(graph2022, aes(x = Departamento, y = Total_Numero_Cabezas)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
+#graficar lo que  importa vrs lo que exporta 
+
+# Agrupar y sumar
+graph2023 <- data2023_fil %>%
+  group_by(`Tipo de Carne`) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+graph2023 <- graph2023 %>%
+  mutate(Tipo_Carne_Label = case_when(
+    `Tipo de Carne` == 1 ~ "Consumo Interno",
+    `Tipo de Carne` == 2 ~ "Exportar",
+    TRUE ~ as.character(`Tipo de Carne`)
+  ))
+
+# Crear la gráfica
+ggplot(graph2023, aes(x = Tipo_Carne_Label, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Número de Cabezas por Tipo de Carne en 2023",
+       x = "Tipo de Operación", 
+       y = "Total Número de Cabezas") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Agrupar y sumar
+graph2022 <- data2022_fil %>%
+  group_by(`Tipo de Carne`) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+graph2022 <- graph2022 %>%
+  mutate(Tipo_Carne_Label = case_when(
+    `Tipo de Carne` == 1 ~ "Consumo Interno",
+    `Tipo de Carne` == 2 ~ "Exportar",
+    TRUE ~ as.character(`Tipo de Carne`)
+  ))
+
+# Crear la gráfica
+ggplot(graph2022, aes(x = Tipo_Carne_Label, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "red") +
+  theme_minimal() +
+  labs(title = "Número de Cabezas por Tipo de Carne en 2022",
+       x = "Tipo de Carne", 
+       y = "Total Número de Cabezas") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
 # Clase 1
 graph2023_clase1 <- data2023_fil %>%
   filter(Clase == 1) %>%
@@ -121,6 +166,28 @@ cabezas, según departamento. Año 2023 ",
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
+
+graph2022_clase1 <- data2022_fil %>%
+  filter(Clase == 1) %>%
+  group_by(Departamento) %>%
+  summarise(Total_Numero_Cabezas = sum(`Número de Cabezas`, na.rm = TRUE))
+
+ggplot(graph2022_clase1, aes(x = Departamento, y = Total_Numero_Cabezas)) +
+  geom_bar(stat = "identity", fill = "green") +
+  theme_minimal() +
+  labs(title = "Destace de ganado Bovino en la República, por número de 
+cabezas, según departamento. Año 2022 ",
+       x = "Departamento", 
+       y = "Total Número de Cabezas") +
+  scale_x_discrete(limits = c("Guatemala", "El Progreso", "Sacatepéquez", 
+                              "Chimaltenango", "Escuintla", "Santa Rosa", 
+                              "Sololá", "Totonicapán", "Quetzaltenango", 
+                              "Suchitepéquez", "Retalhuleu", "San Marcos", 
+                              "Huehuetenango", "Quiché", "Baja Verapaz", 
+                              "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
+                              "Chiquimula", "Jalapa", "Jutiapa")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 # Clase 2
 
 graph2023_clase2 <- data2023_fil %>%
@@ -142,7 +209,7 @@ cabezas, según departamento. Año 2023 ",
                               "Huehuetenango", "Quiché", "Baja Verapaz", 
                               "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
                               "Chiquimula", "Jalapa", "Jutiapa")) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 # Clase 3
@@ -166,7 +233,7 @@ cabezas, según departamento. Año 2023 ",
                               "Huehuetenango", "Quiché", "Baja Verapaz", 
                               "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
                               "Chiquimula", "Jalapa", "Jutiapa")) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Clase 4
 
@@ -190,8 +257,6 @@ cabezas, según departamento. Año 2023 ",
                               "Alta Verapaz", "Petén", "Izabal", "Zacapa", 
                               "Chiquimula", "Jalapa", "Jutiapa")) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-
 
 
 
