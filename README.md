@@ -16,7 +16,7 @@ Para ver las reglas generadas sin generar el documento puedes ver en la carpeta 
 
 # Documentación técnica:
 
-## 1. Este script realiza un análisis y transformación de datos usando R, específicamente para datos relacionados con producción y peso de ganado. 
+### 1. Este script realiza un análisis y transformación de datos usando R, específicamente para datos relacionados con producción y peso de ganado. 
 
 Las principales funciones incluyen:
 
@@ -24,47 +24,48 @@ Limpieza y manipulación de datos.
 Lectura de archivos CSV y Excel.
 Aplicación del algoritmo Apriori para descubrir reglas de asociación.
 
-## 2. Instalación de Librerías Necesarias
+### 2. Instalación de Librerías Necesarias
 
 Para ejecutar el script, asegúrate de tener instaladas las siguientes librerías. Si alguna no está instalada, ejecuta el siguiente código:
 
-### Instalación de librerías necesarias
+#### Instalación de librerías necesarias
 install.packages("arules")
 install.packages("readxl")
 install.packages("dplyr")
 install.packages("purrr")
 
-### Carga de las librerías
+#### Carga de las librerías
 library(arules)
 library(readxl)
 library(dplyr)
 library(purrr)
 
-## 3. Lectura de Datos CSV
+### 3. Lectura de Datos CSV
 Este código lee datos de archivos CSV. Los nombres de los archivos deben adaptarse a tus necesidades.
 
-### NOTA SUPER IMPORTANTE: COLOCA LOS ARCHIVOS EN TU DIRECTORIO :) PARA  PODER LEERLOS Y SINO MODIFICA "2023.csv"
-### Y COLOCA LA DIRECCIÓN DONDE SE ENCUENTRAN
-### Cargar los datos (ajusta las rutas según tu sistema)
+#### NOTA SUPER IMPORTANTE: COLOCA LOS ARCHIVOS EN TU DIRECTORIO :) PARA  PODER LEERLOS Y SINO MODIFICA "2023.csv"
+#### Y COLOCA LA DIRECCIÓN DONDE SE ENCUENTRAN
+
+#### Cargar los datos (ajusta las rutas según tu sistema)
 data2023 <- read.csv("2023.csv", sep = ";")
 data2022 <- read.csv("2022.csv", sep = ";")
 
-## 4. Limpieza y Preprocesamiento de Datos
+### 4. Limpieza y Preprocesamiento de Datos
 Se eliminan las columnas con valores únicos y se realizan algunas conversiones de tipos de datos.
 
-## Eliminar columnas con un solo valor único
+#### Eliminar columnas con un solo valor único
 data2023 <- data2023[, sapply(data2023, function(col) length(unique(col)) > 1)]
 data2022 <- data2022[, sapply(data2022, function(col) length(unique(col)) > 1)]
 
-## Conversiones de tipo
+#### Conversiones de tipo
 data2023$Mes <- as.factor(data2023$Mes)
 data2023$Año <- 2023
 data2022$Mes <- as.factor(data2022$Mes)
 data2022$Año <- 2022
 
-## 5. Renombrar Columnas
+### 5. Renombrar Columnas
 
-### Renombrar columnas de los datos
+#### Renombrar columnas de los datos
 names(data2023) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio", 
                      "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras", 
                      "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
@@ -74,22 +75,22 @@ names(data2022) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio
                      "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras", 
                      "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
                      "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio", "Año")
-## 6. Conversión de Tipos de Datos
+### 6. Conversión de Tipos de Datos
 
-### Conversión de datos a tipos específicos
+#### Conversión de datos a tipos específicos
 data2023$`Número de Cabezas` <- as.integer(data2023$`Número de Cabezas`)
 data2022$`Número de Cabezas` <- as.integer(data2022$`Número de Cabezas`)
 data2023$`Peso total en libras` <- as.double(gsub("[^0-9.-]", "", data2023$`Peso total en libras`))
 data2022$`Peso total en libras` <- as.double(gsub("[^0-9.-]", "", data2022$`Peso total en libras`))
 
-## 7. Combinación de Datos
+### 7. Combinación de Datos
 Combina los datos para análisis conjunto.
 
-### Combinar los datos
+#### Combinar los datos
 Combinar <- bind_rows(data2023, data2022)
 print(head(Combinar))
 
-## 8. Función para Leer Hojas de Archivos Excel
+### 8. Función para Leer Hojas de Archivos Excel
 
 read_sheet_from_row <- function(file_path, sheet) {
 
@@ -111,24 +112,25 @@ read_sheet_from_row <- function(file_path, sheet) {
   data <- mutate(data, Año = year)
   return(data)
 }
-## 9. Lectura de Archivos Excel
 
-### Ruta de la carpeta con archivos
+### 9. Lectura de Archivos Excel
+
+#### Ruta de la carpeta con archivos
 folder_path <- "Archivos Originales/"
 file_list <- list.files(folder_path, pattern = "\\.xlsx$", full.names = TRUE)
 
-### Lista de hojas a leer
+#### Lista de hojas a leer
 sheets_to_read <- c("CUADRO II - 4.1", "CUADRO II - 5.1", ...)
 
-### Leer todos los archivos y hojas
+#### Leer todos los archivos y hojas
 all_data <- file_list %>%
   map_df(~ map_df(sheets_to_read, ~ read_sheet_from_row(.x, .y)))
 
 all_data
 
-## 10. Generar Reglas de Asociación (Apriori)
+### 10. Generar Reglas de Asociación (Apriori)
 
-### Generar reglas de asociación
+#### Generar reglas de asociación
 reglas <- apriori(Combinar, parameter = list(support = 0.2, confidence = 0.5))
 inspect(sort(reglas, by = "lift")[1:10])
 
@@ -139,48 +141,48 @@ El proceso descrito es similar al realizado anteriormente para las demás clases
 Filtrado de 'Tipo de Carne':
 Se verifica si la columna 'Tipo de Carne' contiene menos de 2 valores únicos. Si es así, se elimina la columna para evitar problemas en el análisis de reglas. Esto es útil cuando la variable no aporta diversidad para generar reglas.
 
-### se unen a la misma data
+#### se unen a la misma data
 combinar_data <- bind_rows(data2023, data2022)
 print(head(combinar_data))
 
-### Convertir 'Clase' y 'Sexo (Subclase)'
+#### Convertir 'Clase' y 'Sexo (Subclase)'
 combinar_data$Clase <- as.factor(combinar_data$Clase)
 combinar_data$`Sexo (subclase)` <- as.factor(combinar_data$`Sexo (subclase)`)
 
-### Generar reglas de asociación
+#### Generar reglas de asociación
 reglas <- apriori(combinar_data, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas[0:100])
 
-### Filtrar para 'Clase' específica (ejemplo para clase 4)
+#### Filtrar para 'Clase' específica (ejemplo para clase 4)
 combinar_data_clase4 <- subset(combinar_data, Clase == 4)
 
-### Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
+#### Verifica y elimina 'Tipo de Carne' si tiene menos de 2 valores únicos
 if (length(unique(combinar_data_clase4$`Tipo de Carne`)) <= 1) {
   combinar_data_clase4 <- combinar_data_clase4[, !(names(combinar_data_clase4) %in% "Tipo de Carne")]
 }
 
-### Convertir 'Clase' a factor
+#### Convertir 'Clase' a factor
 combinar_data_clase4$Clase <- as.factor(combinar_data_clase4$Clase)
 
-### Generar reglas con apriori
+#### Generar reglas con apriori
 reglas_clase4 <- apriori(combinar_data_clase4, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_clase4[0:200])
 inspect(sort(reglas_clase4, by = "lift")[1:174])
 
 # ANALISIS CLUSTER 
 
-### seleccionamos la clase con la que vamos a trabajar
+#### seleccionamos la clase con la que vamos a trabajar
 dataf <- subset(combinar_data, Clase == 4)
 
-### mostrar
+#### mostrar
 str(dataf)
 
-### Convertir factores o caracteres a numéricos
+#### Convertir factores o caracteres a numéricos
 dataf <- dataf %>% 
   mutate_if(is.factor, ~ as.numeric(as.character(.))) %>% 
   mutate_if(is.character, ~ as.numeric(.))
 
-### Omitir y verificar filas con NA
+#### Omitir y verificar filas con NA
 sum(is.na(dataf))
 dataf <- na.omit(dataf)
 
@@ -190,7 +192,7 @@ if (!all(sapply(dataf, is.numeric))) {
 
 clusterf <- kmeans(dataf, centers = 4)
 
-### graficar los cluster
+#### graficar los cluster
 ggplot(dataf, aes(x = `Número de Cabezas`, y = `Peso total en libras`, color = as.factor(clusterf$cluster)))+
   geom_point()+
   geom_point(data = as.data.frame(clusterf$centers), aes(x=`Número de Cabezas`, y = `Peso total en libras`), color = "black", size=4, shape=17)+
