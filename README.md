@@ -90,45 +90,7 @@ Combina los datos para análisis conjunto.
 Combinar <- bind_rows(data2023, data2022)
 print(head(Combinar))
 
-### 8. Función para Leer Hojas de Archivos Excel
-
-read_sheet_from_row <- function(file_path, sheet) {
-
-  year <- as.numeric(gsub("[^0-9]", "", basename(file_path)))
-  
-  start_row <- 17
-  clase <- 0
-  sexo <- 0
-
-  data <- read_excel(
-    path = file_path,
-    sheet = sheet,
-    skip = start_row - 1,  # Skip rows before data starts
-    col_names = FALSE  # No headers
-  )
-  
-  data <- data %>%
-    filter(rowSums(is.na(.)) < ncol(.))  # Eliminate empty rows
-  data <- mutate(data, Año = year)
-  return(data)
-}
-
-### 9. Lectura de Archivos Excel
-
-#### Ruta de la carpeta con archivos
-folder_path <- "Archivos Originales/"
-file_list <- list.files(folder_path, pattern = "\\.xlsx$", full.names = TRUE)
-
-#### Lista de hojas a leer
-sheets_to_read <- c("CUADRO II - 4.1", "CUADRO II - 5.1", ...)
-
-#### Leer todos los archivos y hojas
-all_data <- file_list %>%
-  map_df(~ map_df(sheets_to_read, ~ read_sheet_from_row(.x, .y)))
-
-all_data
-
-### 10. Generar Reglas de Asociación (Apriori)
+### 8. Generar Reglas de Asociación (Apriori)
 
 #### Generar reglas de asociación
 reglas <- apriori(Combinar, parameter = list(support = 0.2, confidence = 0.5))
