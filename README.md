@@ -5,6 +5,14 @@ Adapta las rutas de los archivos según el entorno.
 Instala y carga las librerías necesarias.
 Personaliza las columnas, tipos de datos y procesamiento según tus datos específicos.
 
+Los archivos que se van a utilizar son los siguientes: 
+
+[text](ArchivoApriori.R) genera las reglas apriori
+[text](ArchivoApriori2FP-Growth.R) genera las reglas con FPGrowth
+[text](ArchivoKmeans.R)  Genera y gráfica los cluster
+[text](<Archivo Graficas.R>) Genera y gráfica todas las tablas para el análisis y comparación 
+
+Para ver las reglas generadas sin generar el documento puedes ver en la carpeta de REGLAS 
 
 # Documentación técnica:
 
@@ -159,6 +167,35 @@ reglas_clase4 <- apriori(combinar_data_clase4, parameter = list(support = 0.2, c
 inspect(reglas_clase4[0:200])
 inspect(sort(reglas_clase4, by = "lift")[1:174])
 
+# ANALISIS CLUSTER 
+
+### seleccionamos la clase con la que vamos a trabajar
+dataf <- subset(combinar_data, Clase == 4)
+
+### mostrar
+str(dataf)
+
+### Convertir factores o caracteres a numéricos
+dataf <- dataf %>% 
+  mutate_if(is.factor, ~ as.numeric(as.character(.))) %>% 
+  mutate_if(is.character, ~ as.numeric(.))
+
+### Omitir y verificar filas con NA
+sum(is.na(dataf))
+dataf <- na.omit(dataf)
+
+if (!all(sapply(dataf, is.numeric))) {
+  stop("Aún hay columnas no numéricas")
+}
+
+clusterf <- kmeans(dataf, centers = 4)
+
+### graficar los cluster
+ggplot(dataf, aes(x = `Número de Cabezas`, y = `Peso total en libras`, color = as.factor(clusterf$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(clusterf$centers), aes(x=`Número de Cabezas`, y = `Peso total en libras`), color = "black", size=4, shape=17)+
+  labs(title = "`Número de Cabezas` vs Peso total en libras")+
+  theme_minimal()
 
 
 ## REGLAS (Ver en el documento explicación)

@@ -31,6 +31,7 @@ names(data2023) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio
                      "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
                      "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
                      "Carne y Hueso", "Sebo", "Total", "Vísceras", "Cuero", "Sangre", "Desperdicio","Año")
+                     
 names(data2022) <- c("Corre", "Tipo de Carne", "Mes", "Departamento", "Municipio",
                      "Clase", "Sexo (subclase)", "Número de Cabezas", "Peso total en libras",
                      "Peso total del número de cabezas (quintales)", "Peso vivo promedio (Peso de cada cabeza)",
